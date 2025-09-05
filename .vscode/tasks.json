@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "git-init-and-commit-chat-history",
+			"type": "shell",
+			"command": "pwsh",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$ErrorActionPreference = 'Stop';\ntry {\n  Set-Location -LiteralPath 'c:/Users/Asif/OneDrive/Desktop/web';\n  if (-not (Test-Path -LiteralPath '.git')) {\n    git init | Out-Host;\n    git branch -M main | Out-Host;\n  }\n  git add docs/chat-history.md | Out-Host;\n  git status -sb | Out-Host;\n  git commit -m \"docs: add chat history\" --no-verify 2>$null | Out-Host;\n  if ($LASTEXITCODE -ne 0) { Write-Host 'No changes to commit or commit failed (possibly because nothing changed).'; }\n  git remote -v | Out-Host;\n} catch {\n  Write-Host \"ERROR: $($_.Exception.Message)\";\n  exit 1;\n}"
+			],
+			"problemMatcher": []
+		}
+	]
+}

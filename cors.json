@@ -1,0 +1,30 @@
+[
+  {
+    "origin": [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "http://127.0.0.1:3000",
+      "http://127.0.0.1:3001"
+    ],
+    "method": ["GET", "HEAD", "PUT", "POST", "PATCH", "DELETE", "OPTIONS"],
+    "responseHeader": [
+      "Content-Type",
+      "Accept",
+      "Authorization",
+      "x-firebase-appcheck",
+      "x-firebase-gmpid",
+      "x-client-data",
+      "x-goog-meta-*",
+      "x-goog-resumable",
+      "x-goog-upload-command",
+      "x-goog-upload-header-content-length",
+      "x-goog-upload-header-content-type",
+      "x-goog-upload-content-type",
+      "x-goog-upload-file-name",
+      "x-goog-upload-offset",
+      "x-goog-upload-protocol",
+      "x-goog-upload-url"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]

@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(ownerUid) {
+      return isSignedIn() && request.auth.uid == ownerUid;
+    }
+
+    match /users/{uid} {
+      allow read: if true;
+      allow create: if isOwner(uid);
+      allow update, delete: if isOwner(uid);
+    }
+
+    match /models/{modelId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if isOwner(resource.data.ownerUid) || (isSignedIn() && request.auth.token.admin == true);
+    }
+
+    match /models/{modelId}/versions/{versionId} {
+      allow read: if true;
+      allow create: if isOwner(get(/databases/$(database)/documents/models/$(modelId)).data.ownerUid);
+      allow update, delete: if false;
+    }
+
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow delete: if isOwner(resource.data.authorUid) || (isSignedIn() && request.auth.token.admin == true);
+      allow update: if false;
+    }
+
+    match /collections/{collectionId} {
+      allow read: if resource.data.isPrivate == false || isOwner(resource.data.ownerUid);
+      allow create, update, delete: if isOwner(request.resource.data.ownerUid);
+    }
+
+    match /reports/{reportId} {
+      allow create: if isSignedIn();
+      allow read, update, delete: if isSignedIn() && request.auth.token.admin == true;
+    }
+  }
+}
